@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private Vector2 movement;
     private float currentHealth;
+    private GameManager gameManager;
     [SerializeField] private PauseManager pauseManager;
     [SerializeField] private Transform healthBarScale;
     [SerializeField] private Transform floorPoint;
@@ -146,6 +147,7 @@ public class PlayerController : MonoBehaviour
 
     void RestartGame()
     {
+        gameManager.ResetCoins();
         Time.timeScale = 1f;
         playerData.ResetValue();
         loseMessage.SetActive(false);

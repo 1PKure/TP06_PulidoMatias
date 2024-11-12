@@ -1,91 +1,60 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Enemy : MonoBehaviour
 {
-    [SerializeField] private Transform pointA;
-    [SerializeField] private Transform pointB;
-    [SerializeField] private float patrolSpeed = 2f;
-    [SerializeField] private float chaseSpeed = 4f;
-    [SerializeField] private float detectionRange = 5f;
-    [SerializeField] private float meleeAttackRange = 1.5f;
-    [SerializeField] private float rangedAttackRange = 3f;
-    [SerializeField] private Transform player;
-    [SerializeField] private Vector3 targetPoint;
-    [SerializeField] private bool movingToB = true;
-    [SerializeField] private bool isChasing = false;
-    [SerializeField] private Animator animator;
-    [SerializeField] private bool isAttacking = false;
-
+    [SerializeField] private EnemyData enemyData;
+    [SerializeField] private Image healthBar;
+    [SerializeField] private GameObject deathEffect;
+    private float currentHealth;
+    public void Set(EnemyData enemyData)
+    {
+        this.enemyData = enemyData;
+    }
     void Start()
     {
-        animator = GetComponent<Animator>();
-        targetPoint = pointB.position; 
+        currentHealth = enemyData.maxHealth;
+        UpdateHealthBar();
+    }
+    public void TakeDamage(float damage)
+    {
+        currentHealth -= damage;
+        currentHealth = Mathf.Clamp(currentHealth, 0, enemyData.maxHealth);
+        UpdateHealthBar();
+        if (currentHealth <= 0)
+        {
+            Die();
+        }
     }
 
-    void Update()
+    private void UpdateHealthBar()
     {
-        if (isAttacking) return;
+        healthBar.fillAmount = currentHealth / enemyData.maxHealth;
+    }
 
-        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-        if (distanceToPlayer <= detectionRange)
+    void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Player"))
         {
-            isChasing = true;
-            targetPoint = player.position;
-        }
-        else
-        {
-            isChasing = false;
-            targetPoint = movingToB ? pointB.position : pointA.position;
-        }
-
-        if (isChasing)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, targetPoint, chaseSpeed * Time.deltaTime);
-            if (distanceToPlayer <= meleeAttackRange)
+            PlayerController playerController = collision.gameObject.GetComponent<PlayerController>();
+            if (playerController != null)
             {
-                StartCoroutine(MeleeAttack());
-            }
-            else if (distanceToPlayer <= rangedAttackRange)
-            {
-                StartCoroutine(RangedAttack());
+                playerController.TakeDamage(enemyData.damage);
             }
         }
-        else
+    }
+    void Die()
+    {
+        Instantiate(deathEffect, transform.position, Quaternion.identity);
+
+        if (healthBar != null)
         {
-            Patrol();
+            Destroy(healthBar);
         }
-    }
 
-    void Patrol()
-    {
-        transform.position = Vector3.MoveTowards(transform.position, targetPoint, patrolSpeed * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, targetPoint) < 0.1f)
-        {
-            movingToB = !movingToB;
-            targetPoint = movingToB ? pointB.position : pointA.position;
-        }
-    }
-
-    IEnumerator MeleeAttack()
-    {
-        isAttacking = true;
-        animator.SetBool("attack", true);
-        yield return new WaitForSeconds(1f);
-        animator.SetBool("attack", false);
-        isAttacking = false;
-    }
-
-    IEnumerator RangedAttack()
-    {
-        isAttacking = true;
-        animator.SetBool("throw", true); 
-        yield return new WaitForSeconds(1f); 
-        animator.SetBool("throw", false); 
-        isAttacking = false;
+        Destroy(gameObject);
     }
 }
 

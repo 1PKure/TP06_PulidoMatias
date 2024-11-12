@@ -15,8 +15,6 @@ public class PauseManager1 : MonoBehaviour
     [SerializeField] private GameObject pauseMenuUI;
     [SerializeField] private GameObject creditsPanel;
     [SerializeField] private GameObject settingsPanel;
-    [Header("Audio")]
-    [SerializeField] private AudioSource backgroundSound;
 
 
 
