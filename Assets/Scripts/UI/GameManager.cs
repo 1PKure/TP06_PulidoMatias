@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        ResetCoins();
         currentCoins = PlayerPrefs.GetInt("TotalCoins", 0);
         UpdateCoinUI();
         winPanel.SetActive(false);
@@ -39,8 +40,9 @@ public class GameManager : MonoBehaviour
     public void AddCoin(int amount)
     {
         currentCoins += amount; 
-        PlayerPrefs.SetInt("TotalCoins", currentCoins); 
-        UpdateCoinUI(); //
+        PlayerPrefs.SetInt("TotalCoins", currentCoins);
+        UpdateCoinUI();
+        CheckWinCondition();
     }
 
     public void ResetCoins()
@@ -52,7 +54,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckWinCondition()
     {
-        if (currentCoins >= 3) // Verifica si el jugador tiene al menos 3 monedas
+        if (currentCoins >= 3)
         {
             WinGame();
         }

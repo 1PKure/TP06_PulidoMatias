@@ -15,6 +15,6 @@ MonoBehaviour:
   moveSpeed: 150
   maxSpeed: 200
   jumpForce: 15
-  maxHealth: 100
+  maxHealth: 200
   currentHealth: 100
   damage: 5

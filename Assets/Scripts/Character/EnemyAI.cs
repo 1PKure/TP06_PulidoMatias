@@ -72,7 +72,6 @@ public class EnemyAI : MonoBehaviour
         }
         else if (velocityX < 0 && facingRight)
         {
-            // Voltear
             facingRight = false;
             Flip();
         }
@@ -85,6 +84,7 @@ public class EnemyAI : MonoBehaviour
 
     void Patrol()
     {
+        animator.SetFloat("speed", 1);
         transform.position = Vector3.MoveTowards(transform.position, targetPoint, patrolSpeed * Time.deltaTime);
 
         if (Vector3.Distance(transform.position, targetPoint) < 0.2f)

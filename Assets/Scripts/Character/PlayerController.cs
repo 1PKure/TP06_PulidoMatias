@@ -89,7 +89,9 @@ public class PlayerController : MonoBehaviour
     {
         GameObject projectile = Instantiate(projectilePrefab, spawner.position, spawner.rotation);
         Rigidbody2D rb = projectile.GetComponent<Rigidbody2D>();
-        rb.velocity = new Vector2(projectileSpeed * transform.localScale.x, 0);
+
+        float direction = facingRight ? 1f : -1f;
+        rb.velocity = new Vector2(direction * projectileSpeed, 0);
     }
 
     void Flip(float velocityX)
@@ -101,7 +103,6 @@ public class PlayerController : MonoBehaviour
         }
         else if (velocityX < 0 && facingRight)
         {
-            // Voltear
             facingRight = false;
             FlipPlayer();
         }
