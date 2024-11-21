@@ -18,14 +18,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private AudioSource attackSound;
     [SerializeField] private AudioSource loseSound;
     [SerializeField] private Animator animator;
-    [SerializeField] private GameObject projectilePrefab;  
-    [SerializeField] private Transform spawner;            
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private Transform spawner;
     [SerializeField] private Image healthBar;
     [SerializeField] private Canvas canvas;
     [SerializeField] private GameObject loseMessage;
     public PlayerData playerData;
-    private float projectileSpeed = 10f;  
-    private float fireRate = 1f;           
+    private float projectileSpeed = 12f;
+    private float fireRate = 1f;
     private float nextFireTime = 0f;
     private bool facingRight = true;
     void Start()
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
         playerData.currentHealth = playerData.maxHealth;
         UpdateHealthBar();
         rb = GetComponent<Rigidbody2D>();
-        
+
     }
 
     public void Set(PlayerData playerData)
@@ -44,17 +44,6 @@ public class PlayerController : MonoBehaviour
 
     void Update()
     {
-        if (loseMessage.activeSelf && Input.GetKeyDown(KeyCode.Y))
-        {
-            RestartGame();
-        }
-        else if (loseMessage.activeSelf && Input.GetKeyDown(KeyCode.N))
-        {
-            Application.Quit();
-#if UNITY_EDITOR
-            UnityEditor.EditorApplication.isPlaying = false;
-        }
-#endif
         float moveInput = Input.GetAxisRaw("Horizontal");
         Flip(rb.velocity.x);
         rb.velocity = new Vector2(moveInput, rb.velocity.y);
@@ -63,6 +52,7 @@ public class PlayerController : MonoBehaviour
         animator.SetFloat("speed", currentSpeed);
         if (Input.GetKeyDown(KeyCode.X) && Time.time >= nextFireTime)
         {
+            animator.SetTrigger("damage");
             Shoot();
             attackSound.Play();
             nextFireTime = Time.time + fireRate;
@@ -121,7 +111,7 @@ public class PlayerController : MonoBehaviour
 
         if (playerData.currentHealth <= 0)
         {
-            Lose();
+            gameManager.Lose();
         }
     }
 
@@ -133,26 +123,6 @@ public class PlayerController : MonoBehaviour
     {
         playerData.currentHealth = Mathf.Min(playerData.currentHealth + health, playerData.maxHealth);
         UpdateHealthBar();
-    }
-
-    void Lose()
-    {
-        if (pauseManager != null)
-        {
-            pauseManager.enabled = false;
-        }
-        loseSound.Play();
-        loseMessage.SetActive(true);
-        Time.timeScale = 0f;
-    }
-
-    void RestartGame()
-    {
-        gameManager.ResetCoins();
-        Time.timeScale = 1f;
-        playerData.ResetValue();
-        loseMessage.SetActive(false);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     public void SetMovementSpeed(float newSpeed)

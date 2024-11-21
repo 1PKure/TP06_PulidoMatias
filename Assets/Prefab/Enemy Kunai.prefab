@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8100802027012364505}
   - component: {fileID: 6039772586484953719}
   - component: {fileID: -1506701476946829054}
-  - component: {fileID: -5495274954221158951}
   - component: {fileID: -3178884552109003879}
+  - component: {fileID: 4995717385608639438}
   m_Layer: 0
   m_Name: Enemy Kunai
   m_TagString: Untagged
@@ -114,19 +114,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-5495274954221158951
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5900181010612275486}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b6aaad6b688baea49ac4823ce8499563, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  PlayerData: {fileID: 11400000, guid: 1376d91899ee2ef43b306319fb9beffb, type: 2}
 --- !u!61 &-3178884552109003879
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -172,3 +159,17 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.32, y: 1.6}
   m_EdgeRadius: 0
+--- !u!114 &4995717385608639438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5900181010612275486}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56b3b2a62f74ea742a1d28d3c530c48e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damage: 20
+  lifetime: 5

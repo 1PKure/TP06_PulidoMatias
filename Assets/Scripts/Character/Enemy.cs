@@ -8,6 +8,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] private EnemyData enemyData;
     [SerializeField] private Image healthBar;
     [SerializeField] private GameObject deathEffect;
+    [SerializeField] private float particleLifetime = 2f;
     private float currentHealth;
     public void Set(EnemyData enemyData)
     {
@@ -47,13 +48,22 @@ public class Enemy : MonoBehaviour
     }
     void Die()
     {
-        Instantiate(deathEffect, transform.position, Quaternion.identity);
 
         if (healthBar != null)
         {
             Destroy(healthBar);
         }
 
+        if (deathEffect != null)
+        {
+            GameObject particleObject = Instantiate(deathEffect.gameObject, transform.position, Quaternion.identity);
+            ParticleSystem particles = particleObject.GetComponent<ParticleSystem>();
+
+            if (particles != null)
+            {
+                Destroy(particleObject, particleLifetime);
+            }
+        }
         Destroy(gameObject);
     }
 }

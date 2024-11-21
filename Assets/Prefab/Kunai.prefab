@@ -127,6 +127,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerData: {fileID: 11400000, guid: 1376d91899ee2ef43b306319fb9beffb, type: 2}
+  lifetime: 3
 --- !u!61 &-3178884552109003879
 BoxCollider2D:
   m_ObjectHideFlags: 0

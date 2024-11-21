@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 744b45a138494fb4d814968d46a2eada, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  moveSpeed: 150
+  moveSpeed: 300
   maxSpeed: 200
-  jumpForce: 15
+  jumpForce: 20
   maxHealth: 200
   currentHealth: 100
   damage: 5
